@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"taskflow/services"
 	"github.com/gin-gonic/gin"
+	"strconv"
 )
 
 type CreateTaskRequest struct {
@@ -37,4 +38,24 @@ func GetTasks(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, tasks)
+}
+
+func GetTaskByID(c *gin.Context) {
+	idParam := c.Param("id")
+
+	id64, err := strconv.ParseUint(idParam, 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid id"})
+		return
+	}
+	id := uint(id64)
+
+	task, err := services.TaskService.GetTaskByID(id)
+
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "task not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, task)
 }

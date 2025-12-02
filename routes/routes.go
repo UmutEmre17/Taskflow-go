@@ -8,4 +8,5 @@ import (
 func RegisterRoutes(r *gin.Engine) {
 	r.POST("/create-task", controllers.CreateTask)
 	r.GET("/tasks", controllers.GetTasks)
+	r.GET("/tasks/:id", controllers.GetTaskByID)
 }

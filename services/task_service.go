@@ -25,3 +25,7 @@ func (s taskService) CreateTask(title string) (models.Task, error) {
 func (s taskService) GetAllTasks() ([]models.Task, error) {
 	return repositories.TaskRepo.FindAll()
 }
+
+func (s taskService) GetTaskByID(id uint) (models.Task, error) {
+	return repositories.TaskRepo.FindByID(id)
+}

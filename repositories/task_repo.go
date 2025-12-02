@@ -18,3 +18,9 @@ func( r taskRepo) FindAll() ([]models.Task, error) {
 	result := config.DB.Find(&tasks)
 	return tasks, result.Error
 }
+
+func ( r taskRepo) FindByID(id uint) (models.Task, error) {
+	var task models.Task
+	result := config.DB.Find(&task, id)
+	return task, result.Error
+}
