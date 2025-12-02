@@ -12,3 +12,9 @@ var TaskRepo = taskRepo{}
 func (r taskRepo) Create(task *models.Task) error {
 	return config.DB.Create(task).Error
 }
+
+func( r taskRepo) FindAll() ([]models.Task, error) {
+	var tasks []models.Task
+	result := config.DB.Find(&tasks)
+	return tasks, result.Error
+}

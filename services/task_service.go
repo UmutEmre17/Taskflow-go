@@ -21,3 +21,7 @@ func (s taskService) CreateTask(title string) (models.Task, error) {
 	err := repositories.TaskRepo.Create(&task)
 	return task, err
 }
+
+func (s taskService) GetAllTasks() ([]models.Task, error) {
+	return repositories.TaskRepo.FindAll()
+}

@@ -27,3 +27,14 @@ func CreateTask(c *gin.Context) {
 
 	c.JSON(http.StatusOK, task)
 }
+
+func GetTasks(c *gin.Context) {
+	tasks, err := services.TaskService.GetAllTasks()
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "cannot fetch tasks"})
+		return
+	}
+
+	c.JSON(http.StatusOK, tasks)
+}
