@@ -59,3 +59,56 @@ func GetTaskByID(c *gin.Context) {
 
 	c.JSON(http.StatusOK, task)
 }
+
+type UpdateTaskRequest struct {
+	Title  string `json:"title"`
+	Status string `json:"status"`
+}
+
+func UpdateTask(c *gin.Context) {
+	idParam := c.Param("id")
+
+	id64, err := strconv.ParseUint(idParam, 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid id"})
+		return
+	}
+	id := uint(id64)
+
+	var body UpdateTaskRequest
+	if err := c.BindJSON(&body); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid request body"})
+		return
+	}
+
+
+	updatedTask, err := services.TaskService.UpdateTask(id, body.Title, body.Status)
+
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "task not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, updatedTask)
+}
+
+func DeleteTask(c *gin.Context) {
+	idParam := c.Param("id")
+
+	// id string → uint dönüşümü
+	id64, err := strconv.ParseUint(idParam, 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid id"})
+		return
+	}
+	id := uint(id64)
+
+	// service’i çağır
+	err = services.TaskService.DeleteTask(id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "task not found"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "task deleted"})
+}

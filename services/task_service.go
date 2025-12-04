@@ -29,3 +29,27 @@ func (s taskService) GetAllTasks() ([]models.Task, error) {
 func (s taskService) GetTaskByID(id uint) (models.Task, error) {
 	return repositories.TaskRepo.FindByID(id)
 }
+
+func (s taskService) UpdateTask(id uint, title string, status string) (models.Task, error) {
+	task, err := repositories.TaskRepo.FindByID(id)
+
+	if err != nil {
+		return task, err
+	}
+
+	task.Title = title
+	task.Status = status
+
+	err = repositories.TaskRepo.Update(&task)
+	return task, err
+}
+
+func(s taskService) DeleteTask(id uint) error {
+
+	_, err := repositories.TaskRepo.FindByID(id)
+	if err != nil {
+		return err
+	}
+
+	return repositories.TaskRepo.Delete(id)
+}

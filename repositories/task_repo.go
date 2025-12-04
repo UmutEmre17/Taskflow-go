@@ -24,3 +24,13 @@ func ( r taskRepo) FindByID(id uint) (models.Task, error) {
 	result := config.DB.Find(&task, id)
 	return task, result.Error
 }
+
+func( r taskRepo) Update(task *models.Task) error {
+	result := config.DB.Save(task)
+	return result.Error
+}
+
+func ( r taskRepo) Delete(id uint) error {
+	result :=config.DB.Delete(&models.Task{}, id)
+	return result.Error
+}
